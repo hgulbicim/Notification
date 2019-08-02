@@ -1,12 +1,15 @@
 # Notification
 Multiple Platform Notification Prompt Service
+# Example Code
+
+```javascript
 {
   "RequestInfo": {
     "RequestId": "Test"
   },
   "Language": "en",
   "TemplateId": "ConfirmMail",
-  "ChannelCode": "Safir.Online",
+  "ChannelCode": "Online",
   "ScheduleDate": "2019.08.02 17:50",
   "Recipients": [
     {
@@ -23,3 +26,4 @@ Multiple Platform Notification Prompt Service
     "CallbackUrl": "http://localhost"
   }
 }
+```
