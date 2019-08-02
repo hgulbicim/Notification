@@ -1,6 +1,8 @@
 # Notification
 Multi-Platform Notification Service (iOS, Android, SMS, Web, Email, N+ Type)
 
+Self Hosted Http Rest Service
+
 * .Net Core 2.2 
 * MongoDB
 * Nustache
@@ -9,7 +11,10 @@ Multi-Platform Notification Service (iOS, Android, SMS, Web, Email, N+ Type)
 
 # Example Code
 
-```javascript
+Service Request Url: http://localhost:5000/api/Notification/Add
+\
+Request Json Body:
+```json
 {
   "RequestInfo": {
     "RequestId": "Test"
@@ -32,5 +37,14 @@ Multi-Platform Notification Service (iOS, Android, SMS, Web, Email, N+ Type)
     "Fullname": "Huseyin Gulbicim",
     "CallbackUrl": "http://localhost"
   }
+}
+```
+* TemplateItem can be changed dynamically according to the names of the objects used in the theme.
+
+```json
+"TemplateItem": {
+    "Fullname": "Ahmet",
+    "OtpCode": "5848",
+    "CustomProperty": "Custom",
 }
 ```
