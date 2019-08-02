@@ -1,5 +1,11 @@
 # Notification
 Multiple Platform Notification Prompt Service
+* .Net Core 2.2 
+* MongoDB
+* Nustache
+* Generic Repository Pattern
+* AutoMapper
+
 # Example Code
 
 ```javascript
