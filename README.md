@@ -1,5 +1,6 @@
 # Notification
-Multiple Platform Notification Prompt Service
+Multi-Platform Notification Service (iOS, Android, SMS, Web, Email, N+ Type)
+
 * .Net Core 2.2 
 * MongoDB
 * Nustache
