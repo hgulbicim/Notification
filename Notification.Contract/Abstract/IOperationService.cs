@@ -7,5 +7,7 @@ namespace Notification.Contract.Abstract
     public interface IOperationService
     {
         Task<NotificationResponse> AddNotification(NotificationRequest notificationRequest);
+
+        Task<InquiryResponse> InquiryNotification(InquiryRequest inquiryRequest);
     }
 }

@@ -1,8 +1,8 @@
 ﻿using Notification.Business.Abstract;
+using Notification.Business.Repository.Abstract;
 using Notification.Entities;
 using Notification.Entities.Enum;
 using Nustache.Core;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -12,12 +12,20 @@ namespace Notification.Business.Service
     public class NotificationManager : INotificationService
     {
         private readonly INotificationTemplateService _notificationTemplateService;
-        public NotificationManager(INotificationTemplateService notificationTemplateService)
+        private readonly INotificationInfoRepository _notificationInfoRepository;
+
+        public NotificationManager(INotificationTemplateService notificationTemplateService, INotificationInfoRepository notificationInfoRepository)
         {
             _notificationTemplateService = notificationTemplateService;
+            _notificationInfoRepository = notificationInfoRepository;
         }
 
-        public async Task<List<NotificationInfo>> PrepareNotifications(NotificationRequest notificationRequest)
+        public async Task<NotificationInfo> Inquiry(InquiryRequest inquiryRequest)
+        {
+            return await _notificationInfoRepository.Get(x => x.RequestId == inquiryRequest.RequestId);
+        }
+
+        public async Task<List<NotificationInfo>> Prepare(NotificationRequest notificationRequest)
         {
             List<NotificationInfo> notifications = new List<NotificationInfo>();
 
@@ -44,8 +52,8 @@ namespace Notification.Business.Service
                     Subject = subject,
                     Platform = notificationRecipients.Platform,
                     Recipient = notificationRecipients.Recipient,
-                    DeliveryDate = DateTime.Now,
-                    Status = NotificationStatus.Waiting
+                    Status = NotificationStatus.Waiting,
+                    RequestId = notificationRequest.RequestInfo.RequestId
                 };
 
                 notifications.Add(notification);

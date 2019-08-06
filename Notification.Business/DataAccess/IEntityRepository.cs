@@ -12,7 +12,7 @@ namespace Notification.Business.DataAccess
 
         Task<bool> Update(T entity);
 
-        Task<T> Get(Expression<Func<T, bool>> filter, bool isRetrievedFirstRow = true);
+        Task<T> Get(Expression<Func<T, bool>> filter);
 
         Task<List<T>> GetList(Expression<Func<T, bool>> filter = null, Expression<Func<T, object>> order = null);
     }

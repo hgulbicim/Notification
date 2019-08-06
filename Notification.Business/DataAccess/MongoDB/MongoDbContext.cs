@@ -17,6 +17,6 @@ namespace Notification.Business.DataAccess.MongoDB
         public IMongoDatabase DatabaseContext()
         {
             return _databaseContext;
-        }
+        } 
     }
 }

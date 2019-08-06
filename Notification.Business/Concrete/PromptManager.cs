@@ -1,8 +1,10 @@
-﻿using Notification.Business.Abstract;
+﻿using Hangfire;
+using Notification.Business.Abstract;
 using Notification.Business.Repository.Abstract;
 using Notification.Entities;
 using Notification.Entities.Enum;
-using Notification.Service.Common.Service.Notifier.IOSNotifier;
+using Notification.Service.Common.Service.Notifier;
+using System;
 using System.Threading.Tasks;
 
 namespace Notification.Service.Common.Service
@@ -20,22 +22,37 @@ namespace Notification.Service.Common.Service
 
         public async Task SendNotification(NotificationRequest notificationRequest)
         {
-            var notifications = await _notificationService.PrepareNotifications(notificationRequest);
+            var notifications = await _notificationService.Prepare(notificationRequest);
 
             foreach (var notification in notifications)
             {
-                await _notificationInfoRepository.Add(notification);
+                var entity = await _notificationInfoRepository.Add(notification);
 
                 var notifierSender = notifierSenderFactory(notification.Platform);
 
                 if (notifierSender != null)
                 {
-                    await Task.Run(() => { notifierSender.Notify(notification); });
+                    if (notification.ScheduleDate.HasValue == false || (notification.ScheduleDate.HasValue &&
+                                                                        notification.ScheduleDate.Value.Subtract(DateTime.Now).TotalMinutes >= -1 &&
+                                                                        notification.ScheduleDate.Value.Subtract(DateTime.Now).TotalMinutes <= 5))
+                    {
+                        await Task.Run(() =>
+                        {
+                            notifierSender.Notify(notification);
+                        });
+                    }
+                    else
+                    {
+                        await Task.Run(() =>
+                        {
+                            var jobId = BackgroundJob.Schedule(() => notifierSender.Notify(notification), notification.ScheduleDate.Value);
+                        });
+                    }
                 }
             }
         }
 
-        private INotifier notifierSenderFactory(NotificationPlatform notificationPlatform)
+        private INotifierService notifierSenderFactory(NotificationPlatform notificationPlatform)
         {
             switch (notificationPlatform)
             {

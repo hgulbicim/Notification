@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using System.Diagnostics;
 using System.IO;
@@ -11,13 +12,16 @@ namespace Notification.Service
     {
         static async Task Main(string[] args)
         {
-            var exePath = Process.GetCurrentProcess().MainModule.FileName;
-            var rootFolder = Path.GetDirectoryName(exePath);
+            var configuration = new ConfigurationBuilder()
+                                .SetBasePath(Directory.GetCurrentDirectory())
+                                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                                .Build();
 
             await WebHost.CreateDefaultBuilder(args)
-                                .UseContentRoot(rootFolder)
+                                .UseConfiguration(configuration)
+                                .UseContentRoot(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName))
                                 .UseStartup<Startup>()
-                                .UseUrls("http://localhost:5000")
+                                .UseUrls(configuration.GetSection("HostingUrls").Value.Split('|'))
                                 .Build().RunAsync();
         }
     }

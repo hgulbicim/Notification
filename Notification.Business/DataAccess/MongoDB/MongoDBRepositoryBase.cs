@@ -1,6 +1,4 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
-using Notification.Entities;
+﻿using MongoDB.Driver;
 using Notification.Entities.Common;
 using System;
 using System.Collections.Generic;
@@ -9,27 +7,29 @@ using System.Threading.Tasks;
 
 namespace Notification.Business.DataAccess.MongoDB
 {
-    public class MongoDBRepositoryBase<TEntity> : IEntityRepository<TEntity>
+    public class MongoDbRepositoryBase<TEntity> : IEntityRepository<TEntity>
        where TEntity : class, IEntity, new()
     {
 
         private MongoDbContext _mongoDbContext;
 
-        public MongoDBRepositoryBase(MongoDbContext mongoDbContext)
+        public MongoDbRepositoryBase(MongoDbContext mongoDbContext)
         {
             _mongoDbContext = mongoDbContext;
         }
 
         public async Task<TEntity> Add(TEntity entity)
         {
-            await _mongoDbContext.DatabaseContext().GetCollection<TEntity>(entity.GetType().Name).InsertOneAsync(entity);
+            await _mongoDbContext.DatabaseContext().GetCollection<TEntity>(typeof(TEntity).Name).InsertOneAsync(entity);
 
-            return null;
+            return entity;
         }
 
-        public Task<TEntity> Get(Expression<Func<TEntity, bool>> filter, bool isRetrievedFirstRow = true)
+        public async Task<TEntity> Get(Expression<Func<TEntity, bool>> filter)
         {
-            throw new NotImplementedException();
+            var entity = await _mongoDbContext.DatabaseContext().GetCollection<TEntity>(typeof(TEntity).Name).FindAsync(filter);
+
+            return entity.FirstOrDefault();
         }
 
         public Task<List<TEntity>> GetList(Expression<Func<TEntity, bool>> filter = null, Expression<Func<TEntity, object>> order = null)

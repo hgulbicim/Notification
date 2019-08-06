@@ -9,9 +9,11 @@ namespace Notification.Entities
     public class NotificationInfo : IEntity
     {
         [BsonId]
-        public ObjectId Id { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
+        public string RequestId { get; set; }
         public NotificationPlatform Platform { get; set; }
-        //Email ise e-posta adresi
+        //Email ise e-posta adresi 
         //IOS ise Notification Key
         //Android ise Registration Key
         //SMS ise telefon numarası
@@ -22,6 +24,6 @@ namespace Notification.Entities
         public string Message { get; set; }
         public string Error { get; set; }
         public DateTime? DeliveryDate { get; set; }
-        public DateTime ScheduleDate { get; set; } = DateTime.Now;
+        public DateTime? ScheduleDate { get; set; }
     }
 }

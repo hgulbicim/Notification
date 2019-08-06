@@ -2,7 +2,7 @@
 
 namespace Notification.Business.Abstract
 {
-    public interface INotifier
+    public interface INotifierService
     {
         void Notify(NotificationInfo notificationInfo);
     }

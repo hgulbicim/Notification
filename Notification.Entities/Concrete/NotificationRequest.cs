@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 
 namespace Notification.Entities
-{
+{   
     public class NotificationRequest : RequestBase
     {
         public string ChannelCode { get; set; }

@@ -3,6 +3,7 @@
     public enum NotificationStatus : byte
     {
         Waiting,
+        Sending,
         Sent,
         Read,
         Failed

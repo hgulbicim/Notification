@@ -6,6 +6,8 @@ namespace Notification.Business.Abstract
 {
     public interface INotificationService
     {
-        Task<List<NotificationInfo>> PrepareNotifications(NotificationRequest notificationRequest);
+        Task<List<NotificationInfo>> Prepare(NotificationRequest notificationRequest);
+
+        Task<NotificationInfo> Inquiry(InquiryRequest inquiryRequest);
     }
 }

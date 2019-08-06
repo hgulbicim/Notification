@@ -15,10 +15,16 @@ namespace Notification.Service.Controllers
             _operationService = operationService;
         }
 
-        [HttpPost]
+        [HttpPost]        
         public async Task<IActionResult> Add(NotificationRequest notificationRequest)
         {
             return Ok(await _operationService.AddNotification(notificationRequest));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Inquiry(InquiryRequest inquiryRequest)
+        {
+            return Ok(await _operationService.InquiryNotification(inquiryRequest));
         }
     }
 }
