@@ -8,6 +8,9 @@ Self Hosted Http Rest Service
 * Nustache
 * Generic Repository Pattern
 * AutoMapper
+* FluentValidation
+* Hangfire
+* Hangfire.MongoDb
 
 # Example Code
 
